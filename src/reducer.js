@@ -10,6 +10,10 @@ else if (action.type === actionTypes.REMOVE_TASK){
     return state.filter(task=>task.id !== action.payload.id)
 }
 
+else if (action.type === actionTypes.COMPLETE_TASK){
+    return state.map(task => task.id === action.payload.id ? {...task, complete: true} : task)
+}
+
 return state
 }
 
