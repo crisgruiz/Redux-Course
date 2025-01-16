@@ -1,4 +1,4 @@
-import reducer from "./tasks";
+import reducer from "./employees";
 import { configureStore } from "@reduxjs/toolkit";
 
 const store = configureStore({reducer})
