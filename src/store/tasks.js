@@ -1,4 +1,4 @@
- import { createAction } from "@reduxjs/toolkit"
+ import { createAction, createReducer } from "@reduxjs/toolkit"
 
 // Actions
 export const addTask = createAction("ADD_TASK")
@@ -9,19 +9,25 @@ export const completeTask = createAction("COMPLETE_TASK")
 
 let id = 0
 
-const reducer = (state=[], action)=> {
-if(action.type === addTask.type) {
-    return [...state, {id: ++id, task: action.payload.task, complete: false}]
-}
-else if (action.type === removeTask.type){
-    return state.filter(task=>task.id !== action.payload.id)
-}
-
-else if (action.type === completeTask.type){
-    return state.map(task => task.id === action.payload.id ? {...task, complete: true} : task)
-}
-
-return state
-}
-
-export default reducer
+const reducer = createReducer([], (builder) => {
+    builder
+      .addCase(addTask, (state, action) => {
+        state.push({
+          id: ++id, 
+          task: action.payload.task, 
+          complete: false
+        })
+      })
+      .addCase(removeTask, (state, action) => { 
+        const index = state.findIndex(task => task.id === action.payload.id) 
+        state.splice(index, 1)
+      })
+      .addCase(completeTask, (state, action) => {
+        const index = state.findIndex(task => task.id === action.payload.id)
+        if (index !== -1) {
+          state[index].complete = true
+        }
+      })
+  })
+  
+  export default reducer
