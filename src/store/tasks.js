@@ -1,34 +1,23 @@
- // Action types
- 
- const ADD_TASK = "ADD_TASK"
- const REMOVE_TASK = "REMOVE_TASK"
- const COMPLETE_TASK = "COMPLETE_TASK"
+ import { createAction } from "@reduxjs/toolkit"
 
 // Actions
-
-export const addTask = (task)=> {
-    return {type: ADD_TASK, payload:{task: task}}
-}
-export const removeTask = (id) => {
-    return {type: REMOVE_TASK, payload:{id: id}}
-}
-export const completeTask = (id)=>{
-    return {type: COMPLETE_TASK, payload: {id: id}}
-}
+export const addTask = createAction("ADD_TASK")
+export const removeTask = createAction("REMOVE_TASK")
+export const completeTask = createAction("COMPLETE_TASK")
 
 // Reducer
 
 let id = 0
 
 const reducer = (state=[], action)=> {
-if(action.type === ADD_TASK) {
+if(action.type === addTask.type) {
     return [...state, {id: ++id, task: action.payload.task, complete: false}]
 }
-else if (action.type === REMOVE_TASK){
+else if (action.type === removeTask.type){
     return state.filter(task=>task.id !== action.payload.id)
 }
 
-else if (action.type === COMPLETE_TASK){
+else if (action.type === completeTask.type){
     return state.map(task => task.id === action.payload.id ? {...task, complete: true} : task)
 }
 
