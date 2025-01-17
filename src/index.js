@@ -1,7 +1,11 @@
-import { addEmployee } from "./store/employees";
-import store from "./store/configureStore";
 
-store.dispatch(addEmployee({name: "Cristina"}))
+import axios from 'axios'
 
-//Error example
-store.dispatch({type: "SHOW_ERROR", payload: {error: "User not found"} })
+
+const gettingTasks = async () => {
+const response = await axios.get('http://localhost:5500/api/tasks');
+console.log(response);
+
+}
+
+gettingTasks()
