@@ -2,7 +2,7 @@ import employeesReducer from "./employees";
 import taskReducer from "./tasks"
 import { configureStore } from "@reduxjs/toolkit"
 import logger from "redux-logger";
-import error from "../middleware/error";
+import error from "./middleware/error";
 
 const store = configureStore({reducer: {
     tasks: taskReducer,
