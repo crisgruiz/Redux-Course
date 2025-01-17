@@ -1,6 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import error from "./middleware/error";
 let id = 0;
+
+const initialState = {
+  tasks: [],
+  loading: false,
+  error: null,
+};
 
 export const fetchTasks = createAsyncThunk("fetchTasks", async () => {
   const response = await axios.get("http://localhost:5500/api/tasks");
@@ -9,30 +16,43 @@ export const fetchTasks = createAsyncThunk("fetchTasks", async () => {
 
 const tasksSlice = createSlice({
   name: "tasks",
-  initialState: [],
+  initialState,
   reducers: {
     getTasks: (state, action) => {
-      return action.payload.task;
+      state.tasks = action.payload.tasks;
     },
     addTask: (state, action) => {
-      state.push({
+      state.tasks.push({
         id: ++id,
         task: action.payload.task,
         complete: false,
       });
     },
     removeTask: (state, action) => {
-      const index = state.findIndex((task) => task.id === action.payload.id);
+      const index = state.tasks.findIndex(
+        (task) => task.id === action.payload.id
+      );
       if (index !== -1) {
-        state.splice(index, 1);
+        state.tasks.splice(index, 1);
       }
     },
     completeTask: (state, action) => {
-      const index = state.findIndex((task) => task.id === action.payload.id);
+      const index = state.tasks.findIndex(
+        (task) => task.id === action.payload.id
+      );
       if (index !== -1) {
-        state[index].complete = true;
+        state.tasks[index].complete = true;
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchTasks.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchTasks.fulfilled, (state, action) => {
+      state.tasks = action.payload.tasks;
+      state.loading = false;
+    });
   },
 });
 
