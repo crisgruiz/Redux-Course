@@ -1,35 +1,39 @@
- import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
-let id = 0
+let id = 0;
 
- const tasksSlice = createSlice({
-    name: 'tasks',
-    initialState: [],
-    reducers: {
-      addTask: (state, action) => {
-        state.push({
-          id: ++id, 
-          task: action.payload.task, 
-          complete: false
-        })
-      },
-      removeTask: (state, action) => {
-        const index = state.findIndex(task => task.id === action.payload.id)
-        if (index !== -1) {
-          state.splice(index, 1)
-        }
-      },
-      completeTask: (state, action) => {
-        const index = state.findIndex(task => task.id === action.payload.id)
-        if (index !== -1) {
-          state[index].complete = true
-        }
+const tasksSlice = createSlice({
+  name: "tasks",
+  initialState: [],
+  reducers: {
+    getTasks: (state, action) => {
+      return action.payload.task;
+    },
+    addTask: (state, action) => {
+      state.push({
+        id: ++id,
+        task: action.payload.task,
+        complete: false,
+      });
+    },
+    removeTask: (state, action) => {
+      const index = state.findIndex((task) => task.id === action.payload.id);
+      if (index !== -1) {
+        state.splice(index, 1);
       }
-    }
-  })
+    },
+    completeTask: (state, action) => {
+      const index = state.findIndex((task) => task.id === action.payload.id);
+      if (index !== -1) {
+        state[index].complete = true;
+      }
+    },
+  },
+});
 
-  export const { addTask, removeTask, completeTask } = tasksSlice.actions
-  export default tasksSlice.reducer
+export const { getTasks, addTask, removeTask, completeTask } =
+  tasksSlice.actions;
+export default tasksSlice.reducer;
 
 // CreateReducer method
 
@@ -46,13 +50,13 @@ let id = 0
 //     builder
 //       .addCase(addTask, (state, action) => {
 //         state.push({
-//           id: ++id, 
-//           task: action.payload.task, 
+//           id: ++id,
+//           task: action.payload.task,
 //           complete: false
 //         })
 //       })
-//       .addCase(removeTask, (state, action) => { 
-//         const index = state.findIndex(task => task.id === action.payload.id) 
+//       .addCase(removeTask, (state, action) => {
+//         const index = state.findIndex(task => task.id === action.payload.id)
 //         state.splice(index, 1)
 //       })
 //       .addCase(completeTask, (state, action) => {
@@ -62,5 +66,5 @@ let id = 0
 //         }
 //       })
 //   })
-  
+
 //   export default reducer
