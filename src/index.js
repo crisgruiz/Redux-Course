@@ -1,7 +1,14 @@
-import { addEmployee } from "./store/employees";
 import store from "./store/configureStore";
+import { fetchTasks } from "./store/tasks";
 
-store.dispatch(addEmployee({name: "Cristina"}))
+store.dispatch({
+  type: "apiRequest",
+  payload: {
+    url: "/tasks",
+    method: "GET",
+    onSuccess: "getTasks",
+    onError: "SHOW_ERROR",
+  },
+});
 
-//Error example
-store.dispatch({type: "SHOW_ERROR", payload: {error: "User not found"} })
+// store.dispatch(fetchTasks());
